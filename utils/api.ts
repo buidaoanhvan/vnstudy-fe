@@ -10,6 +10,28 @@ async function fetchAuth(url: string, options: any) {
   return res.json();
 }
 
+//nhập học
+export async function registerStudent(values: any) {
+  return fetchAuth(`${API_URL}/students/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: "include",
+  });
+}
+//tạo giáo viên
+export async function createTeacher(values: any) {
+  return fetchAuth(`${API_URL}/teachers/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: "include",
+  });
+}
 export async function loginHandler(values: any) {
   const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",

@@ -8,6 +8,8 @@ import {
   getListSubject,
   createClass,
   getSchedules,
+  createTeacher,
+  registerStudent,
 } from "./api";
 import { checkAuth, logout } from "./auth";
 
@@ -22,4 +24,6 @@ export {
   getListSubject,
   createClass,
   getSchedules,
+  createTeacher,
+  registerStudent,
 };

@@ -7,11 +7,14 @@ import { useRouter } from "next/navigation";
 
 export default function DanhSachHocSinhPage() {
   const [listStudent, setListStudent] = useState([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const data = await getListStudent();
       setListStudent(data.data);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -63,6 +66,7 @@ export default function DanhSachHocSinhPage() {
       <Space direction="vertical" size={16} style={{ width: "100%" }}>
         <Typography.Title level={4}>Danh sách học sinh</Typography.Title>
         <Table
+          loading={loading}
           dataSource={listStudent}
           columns={columns}
           rowKey={(record: any) => record.id}

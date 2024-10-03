@@ -1,8 +1,8 @@
 "use client";
 
-import { Row, Col, Form, Input, Button, Select, Typography } from "antd";
+import { Row, Col, Form, Input, Button, Select, Typography, message } from "antd";
 import { useState, useEffect } from "react";
-import { getListClass } from "@/utils/api";
+import { getListClass, registerStudent } from "@/utils";
 export default function HocSinhPage() {
   const [listClass, setListClass] = useState([]);
 
@@ -14,13 +14,23 @@ export default function HocSinhPage() {
     fetchData();
   }, []);
 
+  const handleSubmit = async (values: any) => {
+    console.log(values);
+    const data = await registerStudent(values);
+    if (data.errorCode == "00") {
+      message.success("Đăng ký thành công");
+    } else {
+      message.error(data.message);
+    }
+  };
+
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" onFinish={handleSubmit}>
       <Typography.Title level={4}>Đăng ký nhập học</Typography.Title>
       <Row gutter={16}>
         <Col xs={24} md={12}>
           <Form.Item
-            name="ten"
+            name="name"
             label="Họ và tên học sinh:"
             rules={[
               { required: true, message: "Vui lòng nhập họ và tên học sinh" },
@@ -31,14 +41,14 @@ export default function HocSinhPage() {
         </Col>
         <Col xs={24} md={12}>
           <Form.Item
-            name="classId"
+            name="classIds"
             label="Lớp:"
             rules={[{ required: true, message: "Vui lòng chọn lớp" }]}
           >
             <Select mode="multiple" placeholder="Chọn lớp đăng ký">
               {listClass.map((item: any) => (
                 <Select.Option key={item.id} value={item.id}>
-                  {item.name}
+                  {item.name} - {item.subject.name}
                 </Select.Option>
               ))}
             </Select>
@@ -48,7 +58,7 @@ export default function HocSinhPage() {
       <Row gutter={16}>
         <Col xs={24} md={12}>
           <Form.Item
-            name="ten"
+            name="parentPhone"
             label="Số điện thoại:"
             rules={[{ required: true, message: "Vui lòng nhập số điện thoại" }]}
           >
@@ -57,7 +67,7 @@ export default function HocSinhPage() {
         </Col>
         <Col xs={24} md={12}>
           <Form.Item
-            name="ten"
+            name="parentName"
             label="Họ và tên phụ huynh:"
             rules={[
               { required: true, message: "Vui lòng nhập họ và tên phụ huynh" },

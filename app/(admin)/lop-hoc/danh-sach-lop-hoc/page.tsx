@@ -51,9 +51,9 @@ export default function ClassListPage() {
       <Table
         dataSource={listClass}
         columns={columns}
-        pagination={{ pageSize: 10 }}
         rowKey={(row: any) => row.id}
         scroll={{ x: 500 }}
+        pagination={{ pageSize: 8 }}
       />
     </section>
   );
