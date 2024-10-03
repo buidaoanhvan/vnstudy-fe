@@ -81,7 +81,7 @@ export default function LichHoc() {
                     <Flex gap={8} key={key} align="baseline">
                       <Form.Item
                         {...field}
-                        style={{ width: "50%" }}
+                        style={{ width: "30%" }}
                         name={[name, "class"]}
                       >
                         <Select placeholder="Chọn lớp">
@@ -94,7 +94,7 @@ export default function LichHoc() {
                       </Form.Item>
                       <Form.Item
                         {...field}
-                        style={{ width: "50%" }}
+                        style={{ width: "30%" }}
                         name={[name, "teacher"]}
                       >
                         <Select placeholder="Chọn giáo viên">
@@ -153,23 +153,24 @@ export default function LichHoc() {
       onOk: () => {
         formAddClass.validateFields().then((values) => {
           const schedules: any = [];
-          values.class.map((item: any) => {
-            const start = dayjs(date)
-              .set("hour", dayjs(item.timeStart).hour())
-              .set("minute", dayjs(item.timeStart).minute())
-              .set("second", 0);
-            const end = dayjs(date)
-              .set("hour", dayjs(item.timeEnd).hour())
-              .set("minute", dayjs(item.timeEnd).minute())
-              .set("second", 0);
-            schedules.push({
-              class: item.class,
-              teacher: item.teacher ? item.teacher : null,
-              timeStart: start.format("YYYY-MM-DD HH:mm:ss"),
-              timeEnd: end.format("YYYY-MM-DD HH:mm:ss"),
+          if (values.length) {
+            values.class.map((item: any) => {
+              const start = dayjs(date)
+                .set("hour", dayjs(item.timeStart).hour())
+                .set("minute", dayjs(item.timeStart).minute())
+                .set("second", 0);
+              const end = dayjs(date)
+                .set("hour", dayjs(item.timeEnd).hour())
+                .set("minute", dayjs(item.timeEnd).minute())
+                .set("second", 0);
+              schedules.push({
+                class: item.class,
+                teacher: item.teacher ? item.teacher : null,
+                timeStart: start.format("YYYY-MM-DD HH:mm:ss"),
+                timeEnd: end.format("YYYY-MM-DD HH:mm:ss"),
+              });
             });
-          });
-          console.log(schedules);
+          }
         });
       },
     });
