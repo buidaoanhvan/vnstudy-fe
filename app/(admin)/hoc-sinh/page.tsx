@@ -15,7 +15,7 @@ export default function HocSinhPage() {
   }, []);
 
   return (
-    <Form layout="vertical" size="large">
+    <Form layout="vertical">
       <Typography.Title level={4}>Đăng ký nhập học</Typography.Title>
       <Row gutter={16}>
         <Col xs={24} md={12}>

@@ -3,8 +3,11 @@
 import { Typography, Table, Flex, Tag, Space } from "antd";
 import { useEffect, useState } from "react";
 import { getListStudent } from "@/utils/api";
+import { useRouter } from "next/navigation";
+
 export default function DanhSachHocSinhPage() {
   const [listStudent, setListStudent] = useState([]);
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
       const data = await getListStudent();
@@ -17,6 +20,37 @@ export default function DanhSachHocSinhPage() {
     {
       title: "Họ và tên",
       dataIndex: "name",
+      render: (text: string, record: any) => (
+        <Typography.Link onClick={() => router.push(`/hoc-sinh/${record.id}`)}>
+          {text}
+        </Typography.Link>
+      ),
+    },
+    {
+      title: "Số dư",
+      dataIndex: "balance",
+      render: (text: string) => (
+        <Typography.Text>
+          {Number(text).toLocaleString("vi-VN")}đ
+        </Typography.Text>
+      ),
+    },
+    {
+      title: "Lớp",
+      dataIndex: "classes",
+      render: (text: any) => (
+        <Space size={8} direction="vertical">
+          {text.map((item: any) => (
+            <Tag color="blue" key={item.id}>
+              {item.name}
+            </Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: "Phụ huynh",
+      dataIndex: "parentName",
     },
     {
       title: "Số điện thoại",
@@ -32,22 +66,7 @@ export default function DanhSachHocSinhPage() {
           dataSource={listStudent}
           columns={columns}
           rowKey={(record: any) => record.id}
-          expandable={{
-            expandedRowRender: (record: any) => (
-              <Flex gap={16} vertical>
-                <Typography.Text>
-                  Phụ huynh: {record.parentName}
-                </Typography.Text>
-                <Typography.Text>Số dư: {record.balance}</Typography.Text>
-                <Space direction="horizontal" size={8}>
-                  <Typography.Text>Lớp học:</Typography.Text>
-                  {record.classes.map((item: any) => (
-                    <Tag>{item.name}</Tag>
-                  ))}
-                </Space>
-              </Flex>
-            ),
-          }}
+          scroll={{ x: 600 }}
         />
       </Space>
     </section>

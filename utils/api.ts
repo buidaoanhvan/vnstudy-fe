@@ -36,8 +36,58 @@ export async function getListClass() {
   });
 }
 
+export async function getListTeacher() {
+  return fetchAuth(`${API_URL}/teachers/list`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
 export async function getListStudent() {
   return fetchAuth(`${API_URL}/students/list`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+export async function registerClass(studentId: number, classId: number) {
+  return fetchAuth(`${API_URL}/class/add-student`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ studentId, classId }),
+    credentials: "include",
+  });
+}
+
+export async function getStudentDetail(studentId: number) {
+  return fetchAuth(`${API_URL}/students/detail/${studentId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+export async function getListSubject() {
+  return fetchAuth(`${API_URL}/subjects/list`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+export async function createClass(values: any) {
+  return fetchAuth(`${API_URL}/class/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: "include",
+  });
+}
+
+export async function getSchedules(month: number, year: number) {
+  return fetchAuth(`${API_URL}/schedules/list/${month}/${year}`, {
     method: "GET",
     credentials: "include",
   });

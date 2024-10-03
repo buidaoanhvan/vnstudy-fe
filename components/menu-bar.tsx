@@ -6,13 +6,12 @@ import {
   IdcardOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Image, Flex } from "antd";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 const { Sider } = Layout;
 
 export default function MenuBar({ collapsed, setCollapsed }: any) {
   const { width } = window.screen;
   const router = useRouter();
-  const pathname = usePathname().split("/")[1] || "/";
   const items = [
     {
       key: "/",
@@ -26,9 +25,29 @@ export default function MenuBar({ collapsed, setCollapsed }: any) {
       key: "lop-hoc",
       icon: <TeamOutlined />,
       label: "Lớp học",
-      onClick: () => {
-        navHandler("/lop-hoc");
-      },
+      children: [
+        {
+          key: "them-lop-hoc",
+          label: "Thêm lớp học",
+          onClick: () => {
+            navHandler("/lop-hoc");
+          },
+        },
+        {
+          key: "danh-sach-lop-hoc",
+          label: "Danh sách lớp học",
+          onClick: () => {
+            navHandler("/lop-hoc/danh-sach-lop-hoc");
+          },
+        },
+        {
+          key: "lich-hoc",
+          label: "Lịch học",
+          onClick: () => {
+            navHandler("/lop-hoc/lich-hoc");
+          },
+        },
+      ],
     },
     {
       key: "giao-vien",
@@ -86,12 +105,7 @@ export default function MenuBar({ collapsed, setCollapsed }: any) {
           className="cursor-pointer rounded-full"
         />
       </Flex>
-      <Menu
-        theme="dark"
-        mode="inline"
-        items={items}
-        selectedKeys={[pathname]}
-      />
+      <Menu theme="dark" mode="inline" items={items} />
     </Sider>
   );
 }

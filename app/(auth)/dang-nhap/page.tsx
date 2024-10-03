@@ -37,7 +37,6 @@ export default function LoginPage() {
         <Input
           placeholder="Tài khoản"
           prefix={<UserOutlined />}
-          size="large"
           autoComplete="off"
         />
       </Form.Item>
@@ -48,7 +47,6 @@ export default function LoginPage() {
         <Input.Password
           placeholder="Mật khẩu"
           prefix={<LockOutlined />}
-          size="large"
           autoComplete="off"
         />
       </Form.Item>
@@ -57,7 +55,6 @@ export default function LoginPage() {
           block
           type="primary"
           htmlType="submit"
-          size="large"
           loading={loading}
         >
           Đăng nhập
