@@ -153,8 +153,15 @@ export default function LichHoc() {
       onOk: () => {
         formAddClass.validateFields().then((values) => {
           const schedules: any = [];
-          if (values.length) {
+          if (values.class) {
             values.class.map((item: any) => {
+              if (
+                item.timeStart == undefined ||
+                item.timeEnd == undefined ||
+                item.class == undefined
+              ) {
+                return;
+              }
               const start = dayjs(date)
                 .set("hour", dayjs(item.timeStart).hour())
                 .set("minute", dayjs(item.timeStart).minute())
@@ -171,6 +178,7 @@ export default function LichHoc() {
               });
             });
           }
+          console.log(schedules);
         });
       },
     });
@@ -238,7 +246,4 @@ export default function LichHoc() {
       }}
     />
   );
-}
-function setTeacherList(data: any) {
-  throw new Error("Function not implemented.");
 }
