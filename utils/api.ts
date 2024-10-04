@@ -10,6 +10,18 @@ async function fetchAuth(url: string, options: any) {
   return res.json();
 }
 
+//tạo lịch học (nhiều lịch học)
+export async function createSchedules(values: any) {
+  return fetchAuth(`${API_URL}/schedules/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: "include",
+  });
+}
+
 //nhập học
 export async function registerStudent(values: any) {
   return fetchAuth(`${API_URL}/students/register`, {

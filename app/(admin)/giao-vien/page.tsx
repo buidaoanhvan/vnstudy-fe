@@ -9,9 +9,11 @@ import {
   Typography,
   Space,
   Table,
+  DatePicker,
 } from "antd";
 import { getListSubject, createTeacher, getListTeacher } from "@/utils";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 export default function TeacherPage() {
   const [listSubject, setListSubject] = useState([]);
@@ -55,6 +57,12 @@ export default function TeacherPage() {
       title: "Môn dạy",
       dataIndex: ["subject", "name"],
       key: "name",
+    },
+    {
+      title: "Ngày tạo",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date: any) => dayjs(date).format("DD/MM/YYYY"),
     },
   ];
 

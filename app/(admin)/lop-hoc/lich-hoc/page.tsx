@@ -19,6 +19,7 @@ import {
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { createSchedules } from "@/utils/api";
 
 export default function LichHoc() {
   const { message, modal } = App.useApp();
@@ -29,9 +30,10 @@ export default function LichHoc() {
   const [classList, setClassList] = useState<any[]>([]);
   const [teacherList, setTeacherList] = useState<any[]>([]);
 
-  const handleSelect = (date: any, data: any) => {
+  const handleSelect = (dateSelect: any, data: any) => {
+    formAddClass.resetFields();
     modal.confirm({
-      title: `Lịch học ngày ${dayjs(date).format("DD/MM/YYYY")}`,
+      title: `Lịch học ngày ${dayjs(dateSelect).format("DD/MM/YYYY")}`,
       content: (
         <Space direction="vertical" size={8} style={{ width: "100%" }}>
           <Typography.Text strong={true}>Lớp đã có trong lịch:</Typography.Text>
@@ -82,12 +84,18 @@ export default function LichHoc() {
                       <Form.Item
                         {...field}
                         style={{ width: "30%" }}
-                        name={[name, "class"]}
+                        name={[name, "classId"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng chọn lớp",
+                          },
+                        ]}
                       >
                         <Select placeholder="Chọn lớp">
                           {classList.map((item) => (
                             <Select.Option key={item.id} value={item.id}>
-                              {item.name}
+                              {item.name} - {item.subject.name}
                             </Select.Option>
                           ))}
                         </Select>
@@ -95,7 +103,7 @@ export default function LichHoc() {
                       <Form.Item
                         {...field}
                         style={{ width: "30%" }}
-                        name={[name, "teacher"]}
+                        name={[name, "teacherId"]}
                       >
                         <Select placeholder="Chọn giáo viên">
                           {teacherList.map((item) => (
@@ -109,6 +117,9 @@ export default function LichHoc() {
                         {...field}
                         name={[name, "timeStart"]}
                         style={{ width: "20%" }}
+                        initialValue={dayjs(dateSelect)
+                          .set("hour", 8)
+                          .set("minute", 0)}
                       >
                         <TimePicker
                           placeholder="Chọn giờ bắt đầu"
@@ -120,6 +131,9 @@ export default function LichHoc() {
                         {...field}
                         name={[name, "timeEnd"]}
                         style={{ width: "20%" }}
+                        initialValue={dayjs(dateSelect)
+                          .set("hour", 8)
+                          .set("minute", 0)}
                       >
                         <TimePicker
                           placeholder="Chọn giờ kết thúc"
@@ -150,53 +164,53 @@ export default function LichHoc() {
       cancelText: "Hủy",
       width: 800,
       icon: false,
-      onOk: () => {
-        formAddClass.validateFields().then((values) => {
-          const schedules: any = [];
-          if (values.class) {
-            values.class.map((item: any) => {
-              if (
-                item.timeStart == undefined ||
-                item.timeEnd == undefined ||
-                item.class == undefined
-              ) {
-                return;
-              }
-              const start = dayjs(date)
-                .set("hour", dayjs(item.timeStart).hour())
-                .set("minute", dayjs(item.timeStart).minute())
-                .set("second", 0);
-              const end = dayjs(date)
-                .set("hour", dayjs(item.timeEnd).hour())
-                .set("minute", dayjs(item.timeEnd).minute())
-                .set("second", 0);
-              schedules.push({
-                class: item.class,
-                teacher: item.teacher ? item.teacher : null,
-                timeStart: start.format("YYYY-MM-DD HH:mm:ss"),
-                timeEnd: end.format("YYYY-MM-DD HH:mm:ss"),
-              });
-            });
+      onOk: async () => {
+        try {
+          await formAddClass.validateFields();
+          const arrSchedules = formAddClass.getFieldsValue().class;
+          if (!arrSchedules) {
+            return;
           }
-          console.log(schedules);
-        });
+          const arrSchedulesOk = arrSchedules.map((item: any) => {
+            return {
+              classId: item.classId,
+              teacherId: item.teacherId,
+              timeStart: dayjs(dateSelect)
+                .set("hour", item.timeStart.get("hour"))
+                .set("minute", item.timeStart.get("minute")),
+              timeEnd: dayjs(dateSelect)
+                .set("hour", item.timeEnd.get("hour"))
+                .set("minute", item.timeEnd.get("minute")),
+            };
+          });
+          const res = await createSchedules(arrSchedulesOk);
+          if (res.errorCode == "00") {
+            message.success("Tạo lịch học thành công");
+            fetchData();
+          } else {
+            message.error("Tạo lịch học thất bại");
+          }
+        } catch (error) {
+          return Promise.reject();
+        }
       },
     });
   };
 
+  const fetchData = async () => {
+    const res = await getSchedules(month, year);
+    const resTeachers = await getListTeacher();
+    const resClass = await getListClass();
+    setTeacherList(resTeachers.data);
+    setDataSchedules(res.data);
+    setClassList(resClass.data);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getSchedules(month, year);
-      const resTeachers = await getListTeacher();
-      const resClass = await getListClass();
-      setTeacherList(resTeachers.data);
-      setDataSchedules(res.data);
-      setClassList(resClass.data);
-    };
     fetchData();
   }, [month, year]);
 
-  const cellRender = (current: any, info: any) => {
+  const cellRender = (current: any) => {
     const cellData = dataSchedules.find((item) =>
       dayjs(item.date).isSame(current, "day")
     );
@@ -210,7 +224,7 @@ export default function LichHoc() {
             <Space key={item.id}>
               <Badge status="success" />
               <Typography.Text ellipsis={true}>
-                {item.class.name} - {item.teacher.name}
+                {item.class.name} - {item.class.subject.name}
               </Typography.Text>
             </Space>
           ))}
