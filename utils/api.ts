@@ -10,6 +10,38 @@ async function fetchAuth(url: string, options: any) {
   return res.json();
 }
 
+//tìm học sinh theo tên
+export async function searchStudent(name: string) {
+  return fetchAuth(`${API_URL}/students/search/${name}`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+//lấy danh sách học sinh
+export async function getListStudentByClass(classId: number) {
+  return fetchAuth(`${API_URL}/students/list-by-class/${classId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+//lấy danh sách học sinh theo lớp
+export async function getListStudentByTeacher(teacherId: number) {
+  return fetchAuth(`${API_URL}/students/list-by-teacher/${teacherId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+//lấy lớp chi tiết theo id
+export async function getClassDetail(classId: number) {
+  return fetchAuth(`${API_URL}/class/detail/${classId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
 //tạo lịch học (nhiều lịch học)
 export async function createSchedules(values: any) {
   return fetchAuth(`${API_URL}/schedules/create`, {

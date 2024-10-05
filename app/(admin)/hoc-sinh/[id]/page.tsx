@@ -104,7 +104,7 @@ export default function HocSinhPage() {
     <section>
       {student ? (
         <Space direction="vertical" size={10} className="w-full">
-          <Typography.Title level={5}>Chi tiết học sinh</Typography.Title>
+          <Typography.Title level={4}>Chi tiết học sinh</Typography.Title>
           <Row gutter={[5, 5]}>
             <Col xs={24} md={12} lg={8}>
               <Space size={8}>
@@ -142,7 +142,7 @@ export default function HocSinhPage() {
             </Col>
           </Row>
           <Flex gap={10}>
-            <Typography.Title level={5}>Danh sách lớp học</Typography.Title>
+            <Typography.Title level={4}>Danh sách lớp học</Typography.Title>
             <Button
               type="primary"
               icon={<PlusOutlined />}

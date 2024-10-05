@@ -2,12 +2,14 @@
 import { Table, Typography, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { getListClass } from "@/utils";
+import Link from "next/link";
 
 const columns = [
   {
     title: "Tên lớp",
     dataIndex: "name",
     key: "name",
+    render: (text: string, record: any) => <Link href={`/lop-hoc/${record.id}`}>{text}</Link>,
   },
   {
     title: "Môn học",

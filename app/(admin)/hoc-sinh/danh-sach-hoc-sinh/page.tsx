@@ -1,23 +1,37 @@
 "use client";
 
-import { Typography, Table, Flex, Tag, Space } from "antd";
+import { Typography, Table, Input, Tag, Space } from "antd";
 import { useEffect, useState } from "react";
-import { getListStudent } from "@/utils/api";
+import { getListStudent, searchStudent } from "@/utils";
 import { useRouter } from "next/navigation";
 
 export default function DanhSachHocSinhPage() {
   const [listStudent, setListStudent] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+
+  const handleSearch = (value: any) => {
+    setSearchTerm(value.target.value);
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    if (!searchTerm) {
       const data = await getListStudent();
       setListStudent(data.data);
       setLoading(false);
-    };
+      return;
+    }
+    const data = await searchStudent(searchTerm);
+    setListStudent(data.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
     fetchData();
-  }, []);
+    console.log(searchTerm);
+  }, [searchTerm]);
 
   const columns = [
     {
@@ -40,12 +54,12 @@ export default function DanhSachHocSinhPage() {
     },
     {
       title: "Lớp",
-      dataIndex: "classes",
+      dataIndex: ["StudentClass"],
       render: (text: any) => (
         <Space size={8} direction="vertical">
           {text.map((item: any) => (
             <Tag color="blue" key={item.id}>
-              {item.name}
+              {item.class.name}
             </Tag>
           ))}
         </Space>
@@ -65,6 +79,7 @@ export default function DanhSachHocSinhPage() {
     <section>
       <Space direction="vertical" size={16} style={{ width: "100%" }}>
         <Typography.Title level={4}>Danh sách học sinh</Typography.Title>
+        <Input.Search placeholder="Tìm kiếm học sinh" onChange={handleSearch} />
         <Table
           loading={loading}
           dataSource={listStudent}
