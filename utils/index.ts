@@ -13,6 +13,9 @@ import {
   getClassDetail,
   searchStudent,
   getListStudent,
+  getTodaySchedules,
+  getScheduleDetail,
+  createAttendance,
 } from "./api";
 import { checkAuth, logout } from "./auth";
 
@@ -32,4 +35,7 @@ export {
   getClassDetail,
   searchStudent,
   getListStudent,
+  getTodaySchedules,
+  getScheduleDetail,
+  createAttendance,
 };

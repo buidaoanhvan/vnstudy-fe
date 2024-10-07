@@ -10,6 +10,33 @@ async function fetchAuth(url: string, options: any) {
   return res.json();
 }
 
+//điểm danh
+export async function createAttendance(data: any) {
+  return fetchAuth(`${API_URL}/attendance`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+}
+//lấy chi tiết lịch học
+export async function getScheduleDetail(id: number) {
+  return fetchAuth(`${API_URL}/schedules/detail/${id}`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+//lấy lịch học hôm nay
+export async function getTodaySchedules() {
+  return fetchAuth(`${API_URL}/schedules/today`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
 //tìm học sinh theo tên
 export async function searchStudent(name: string) {
   return fetchAuth(`${API_URL}/students/search/${name}`, {
