@@ -117,6 +117,7 @@ export default function TeacherPage() {
         rowKey={(record: any) => record.id}
         scroll={{ x: 600 }}
         pagination={{ pageSize: 4 }}
+        size="small"
       />
     </Space>
   );

@@ -117,6 +117,7 @@ export default function classDetailPage() {
         pagination={{ pageSize: 5, size: "small" }}
         rowKey={(record: any) => record.student.id}
         scroll={{ x: 600 }}
+         size="small"
       />
     </Space>
   );

@@ -9,7 +9,9 @@ const columns = [
     title: "Tên lớp",
     dataIndex: "name",
     key: "name",
-    render: (text: string, record: any) => <Link href={`/lop-hoc/${record.id}`}>{text}</Link>,
+    render: (text: string, record: any) => (
+      <Link href={`/lop-hoc/${record.id}`}>{text}</Link>
+    ),
   },
   {
     title: "Môn học",
@@ -57,6 +59,7 @@ export default function ClassListPage() {
         rowKey={(row: any) => row.id}
         scroll={{ x: 500 }}
         pagination={{ pageSize: 8 }}
+        size="small"
       />
     </Space>
   );

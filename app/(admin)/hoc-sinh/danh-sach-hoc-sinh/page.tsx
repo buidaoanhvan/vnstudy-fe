@@ -89,6 +89,7 @@ export default function DanhSachHocSinhPage() {
           columns={columns}
           rowKey={(record: any) => record.id}
           scroll={{ x: 600, y:  height - 340}}
+           size="small"
         />
       </Space>
     </section>

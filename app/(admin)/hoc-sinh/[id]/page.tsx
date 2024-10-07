@@ -255,6 +255,7 @@ export default function HocSinhPage() {
             rowKey={(row: any) => row.classId}
             pagination={false}
             scroll={{ x: 480 }}
+            size="small"
           />
           <Typography.Title level={4}>Điểm danh</Typography.Title>
           <Table
@@ -263,6 +264,7 @@ export default function HocSinhPage() {
             rowKey={(row: any) => row.id}
             pagination={false}
             scroll={{ x: 480 }}
+            size="small"
           />
           <Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>
           <Table
@@ -271,6 +273,7 @@ export default function HocSinhPage() {
             rowKey={(row: any) => row.id}
             pagination={false}
             scroll={{ x: 680 }}
+            size="small"
           />
         </Space>
       ) : (

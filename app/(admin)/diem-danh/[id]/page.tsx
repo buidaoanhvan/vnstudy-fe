@@ -138,6 +138,7 @@ export default function Page() {
         rowKey={(row: any) => row.studentId}
         pagination={false}
         scroll={{ y: height - 345 }}
+        size="small"
       />
     </Space>
   );
