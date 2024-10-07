@@ -106,6 +106,7 @@ export default function classDetailPage() {
         dataSource={classData?.ClassSchedule}
         rowKey={(record: any) => record.id}
         pagination={{ pageSize: 5, size: "small" }}
+        scroll={{ x: 600 }}
       />
       <Typography.Title level={4} style={{ margin: 0 }}>
         Học sinh
@@ -115,6 +116,7 @@ export default function classDetailPage() {
         dataSource={classData?.StudentClass}
         pagination={{ pageSize: 5, size: "small" }}
         rowKey={(record: any) => record.student.id}
+        scroll={{ x: 600 }}
       />
     </Space>
   );

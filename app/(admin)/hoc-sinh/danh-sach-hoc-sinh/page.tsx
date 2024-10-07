@@ -4,12 +4,15 @@ import { Typography, Table, Input, Tag, Space } from "antd";
 import { useEffect, useState } from "react";
 import { getListStudent, searchStudent } from "@/utils";
 import { useRouter } from "next/navigation";
+import { useWindowSize } from "react-use";
+
 
 export default function DanhSachHocSinhPage() {
   const [listStudent, setListStudent] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
+  const { width, height } = useWindowSize();
 
   const handleSearch = (value: any) => {
     setSearchTerm(value.target.value);
@@ -85,7 +88,7 @@ export default function DanhSachHocSinhPage() {
           dataSource={listStudent}
           columns={columns}
           rowKey={(record: any) => record.id}
-          scroll={{ x: 600 }}
+          scroll={{ x: 600, y:  height - 340}}
         />
       </Space>
     </section>

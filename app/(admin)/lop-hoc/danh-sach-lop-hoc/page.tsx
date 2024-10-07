@@ -1,5 +1,5 @@
 "use client";
-import { Table, Typography, Tag } from "antd";
+import { Table, Typography, Tag, Space } from "antd";
 import { useEffect, useState } from "react";
 import { getListClass } from "@/utils";
 import Link from "next/link";
@@ -49,7 +49,8 @@ export default function ClassListPage() {
   }, []);
 
   return (
-    <section>
+    <Space direction="vertical" size={8} style={{ width: "100%" }}>
+      <Typography.Title level={4}>Danh sách lớp học</Typography.Title>
       <Table
         dataSource={listClass}
         columns={columns}
@@ -57,6 +58,6 @@ export default function ClassListPage() {
         scroll={{ x: 500 }}
         pagination={{ pageSize: 8 }}
       />
-    </section>
+    </Space>
   );
 }

@@ -1,6 +1,6 @@
 import { logout } from "./auth";
 
-const API_URL = "http://localhost:3333";
+const API_URL = "http://192.168.10.96:3333";
 
 async function fetchAuth(url: string, options: any) {
   const res = await fetch(url, options);

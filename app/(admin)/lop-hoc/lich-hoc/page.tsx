@@ -38,7 +38,7 @@ export default function LichHoc() {
           <Typography.Text strong={true}>Lớp đã có trong lịch:</Typography.Text>
           <Row
             gutter={[8, 8]}
-            style={{ width: "100%", maxHeight: "200px", overflow: "auto" }}
+            style={{ width: "100%", height: 180, overflow: "auto" }}
           >
             {data?.schedules.length > 0 ? (
               data?.schedules.map((item: any) => (
@@ -77,59 +77,75 @@ export default function LichHoc() {
           <Form layout="vertical" form={formAddClass}>
             <Form.List name="class">
               {(fields, { add, remove }) => (
-                <>
-                  {fields.map(({ key, name, ...field }) => (
-                    <Flex gap={8} key={key} align="baseline">
-                      <Form.Item
-                        {...field}
-                        style={{ width: "50%" }}
-                        name={[name, "classId"]}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Vui lòng chọn lớp",
-                          },
-                        ]}
+                <Space size={8} style={{ width: "100%" }} direction="vertical">
+                  <div style={{ height: 180, overflow: "auto" }}>
+                    {fields.map(({ key, name, ...field }) => (
+                      <Flex
+                        key={key}
+                        align="baseline"
+                        vertical
+                        style={{
+                          borderBottom: "1px dashed #ccc",
+                          marginBottom: 16,
+                        }}
                       >
-                        <Select placeholder="Chọn lớp">
-                          {classList.map((item) => (
-                            <Select.Option key={item.id} value={item.id}>
-                              {item.name} - {item.subject.name}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                      <Form.Item
-                        {...field}
-                        name={[name, "timeStart"]}
-                        style={{ width: "20%" }}
-                        initialValue={dayjs(dateSelect)
-                          .set("hour", 8)
-                          .set("minute", 0)}
-                      >
-                        <TimePicker
-                          placeholder="Chọn giờ bắt đầu"
+                        <Form.Item
+                          {...field}
                           style={{ width: "100%" }}
-                          format="HH:mm"
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        {...field}
-                        name={[name, "timeEnd"]}
-                        style={{ width: "20%" }}
-                        initialValue={dayjs(dateSelect)
-                          .set("hour", 8)
-                          .set("minute", 0)}
-                      >
-                        <TimePicker
-                          placeholder="Chọn giờ kết thúc"
+                          name={[name, "classId"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng chọn lớp",
+                            },
+                          ]}
+                        >
+                          <Select placeholder="Chọn lớp">
+                            {classList.map((item) => (
+                              <Select.Option key={item.id} value={item.id}>
+                                {item.name} - {item.subject.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                        <Flex
+                          gap={8}
                           style={{ width: "100%" }}
-                          format="HH:mm"
-                        />
-                      </Form.Item>
-                      <MinusCircleOutlined onClick={() => remove(name)} />
-                    </Flex>
-                  ))}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...field}
+                            name={[name, "timeStart"]}
+                            initialValue={dayjs(dateSelect)
+                              .set("hour", 8)
+                              .set("minute", 0)}
+                            style={{ width: "50%" }}
+                          >
+                            <TimePicker
+                              placeholder="Chọn giờ bắt đầu"
+                              style={{ width: "100%" }}
+                              format="HH:mm"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            {...field}
+                            name={[name, "timeEnd"]}
+                            initialValue={dayjs(dateSelect)
+                              .set("hour", 8)
+                              .set("minute", 0)}
+                            style={{ width: "50%" }}
+                          >
+                            <TimePicker
+                              placeholder="Chọn giờ kết thúc"
+                              style={{ width: "100%" }}
+                              format="HH:mm"
+                            />
+                          </Form.Item>
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Flex>
+                      </Flex>
+                    ))}
+                  </div>
                   <Form.Item>
                     <Button
                       type="dashed"
@@ -140,7 +156,7 @@ export default function LichHoc() {
                       Thêm lớp
                     </Button>
                   </Form.Item>
-                </>
+                </Space>
               )}
             </Form.List>
           </Form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Space, Table, Typography, App, Row, Col } from "antd";
+import { Button, Space, Table, Typography, App, Row, Col, Input } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { createAttendance, getScheduleDetail } from "@/utils";
 import { useParams } from "next/navigation";
@@ -119,6 +119,7 @@ export default function Page() {
       <Typography.Title level={4} style={{ margin: 0 }}>
         Danh sách học sinh
       </Typography.Title>
+      <Input.Search placeholder="Tìm theo tên học sinh"/>
       <Table
         dataSource={studentClass}
         columns={columnsListStudent as any}

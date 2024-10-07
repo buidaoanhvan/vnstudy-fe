@@ -11,6 +11,7 @@ const { Content } = Layout;
 import { useRouter } from "next/navigation";
 import { checkAuth } from "@/utils";
 import viVN from "antd/es/locale/vi_VN";
+import { useWindowSize } from "react-use";
 
 export default function AdminLayout({
   children,
@@ -20,6 +21,7 @@ export default function AdminLayout({
   const [userInfo, setUserInfo] = useState(null);
   const [collapsed, setCollapsed] = useState(true);
   const router = useRouter();
+  const { width, height } = useWindowSize();
 
   const locale = {
     ...viVN,
@@ -64,18 +66,18 @@ export default function AdminLayout({
     <UserProvider value={{ userInfo, setUserInfo }}>
       {userInfo ? (
         <ConfigProvider locale={locale}>
-          <Layout style={{ height: "100vh" }}>
+          <Layout style={{ height: height }}>
             <MenuBar collapsed={collapsed} setCollapsed={setCollapsed} />
             <Layout>
               <HeaderBar collapsed={collapsed} setCollapsed={setCollapsed} />
-              <Content style={{ margin: "24px 16px 0" }}>
+              <Content style={{ padding: 12 }}>
                 <div
                   style={{
-                    padding: 24,
                     background: colorBgContainer,
                     borderRadius: borderRadiusLG,
-                    height: "calc(100vh - 110px)",
+                    height: height - 87,
                     overflow: "auto",
+                    padding: 16,
                   }}
                 >
                   {children}
