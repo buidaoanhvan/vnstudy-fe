@@ -49,6 +49,11 @@ export default function HocSinhPage() {
   ];
   const columnsAttendance = [
     {
+      title: "Mã",
+      dataIndex: "id",
+      render: (text: any) => <Typography.Text>{text}</Typography.Text>,
+    },
+    {
       title: "Điểm danh",
       dataIndex: "status",
       render: (text: any) => {
@@ -81,6 +86,53 @@ export default function HocSinhPage() {
       ),
     },
   ];
+
+  const columnsTransaction = [
+    {
+      title: "Mã",
+      dataIndex: "id",
+      render: (text: any) => <Typography.Text>{text}</Typography.Text>,
+    },
+    {
+      title: "Loại",
+      dataIndex: "type",
+      render: (text: any) => {
+        if (text == "ADD") {
+          return <Tag color="green">Cộng</Tag>;
+        } else if (text == "SUBTRACT") {
+          return <Tag color="red">Trừ</Tag>;
+        } else if (text == "DEBT") {
+          return <Tag color="default">Nợ</Tag>;
+        } else {
+          return <Tag color="default">...</Tag>;
+        }
+      },
+    },
+    {
+      title: "Số tiền",
+      dataIndex: "amount",
+      render: (text: any) => (
+        <Typography.Text>
+          {Number(text).toLocaleString("vi-VN")}đ
+        </Typography.Text>
+      ),
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "description",
+      render: (text: any) => <Typography.Text>{text}</Typography.Text>,
+    },
+    {
+      title: "Thời gian",
+      dataIndex: "createdAt",
+      render: (text: any) => (
+        <Typography.Text>
+          {dayjs(text).format("DD/MM/YYYY HH:mm")}
+        </Typography.Text>
+      ),
+    },
+  ];
+
   const handleAddClass = () => {
     const classOptions = classes.map((item: any) => ({
       label:
@@ -177,6 +229,14 @@ export default function HocSinhPage() {
                 <Typography.Text strong={true}>...</Typography.Text>
               </Space>
             </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Space size={8}>
+                <Typography.Text>Số dư:</Typography.Text>
+                <Typography.Text strong={true}>
+                  {Number(student?.balance).toLocaleString("vi-VN")}đ
+                </Typography.Text>
+              </Space>
+            </Col>
           </Row>
           <Flex gap={10}>
             <Typography.Title level={4}>Danh sách lớp học</Typography.Title>
@@ -203,6 +263,14 @@ export default function HocSinhPage() {
             rowKey={(row: any) => row.id}
             pagination={false}
             scroll={{ x: 480 }}
+          />
+          <Typography.Title level={4}>Lịch sử giao dịch</Typography.Title>
+          <Table
+            columns={columnsTransaction}
+            dataSource={student?.Transaction}
+            rowKey={(row: any) => row.id}
+            pagination={false}
+            scroll={{ x: 680 }}
           />
         </Space>
       ) : (
