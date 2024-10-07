@@ -1,6 +1,6 @@
 "use client";
 
-import { getListClass, getSchedules, getListTeacher } from "@/utils";
+import { getListClass, getSchedules } from "@/utils";
 import {
   Calendar,
   App,
@@ -28,7 +28,6 @@ export default function LichHoc() {
   const [year, setYear] = useState<number>(dayjs().year());
   const [formAddClass] = Form.useForm();
   const [classList, setClassList] = useState<any[]>([]);
-  const [teacherList, setTeacherList] = useState<any[]>([]);
 
   const handleSelect = (dateSelect: any, data: any) => {
     formAddClass.resetFields();
@@ -83,7 +82,7 @@ export default function LichHoc() {
                     <Flex gap={8} key={key} align="baseline">
                       <Form.Item
                         {...field}
-                        style={{ width: "30%" }}
+                        style={{ width: "50%" }}
                         name={[name, "classId"]}
                         rules={[
                           {
@@ -96,19 +95,6 @@ export default function LichHoc() {
                           {classList.map((item) => (
                             <Select.Option key={item.id} value={item.id}>
                               {item.name} - {item.subject.name}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                      <Form.Item
-                        {...field}
-                        style={{ width: "30%" }}
-                        name={[name, "teacherId"]}
-                      >
-                        <Select placeholder="Chọn giáo viên">
-                          {teacherList.map((item) => (
-                            <Select.Option key={item.id} value={item.id}>
-                              {item.name}
                             </Select.Option>
                           ))}
                         </Select>
@@ -174,7 +160,8 @@ export default function LichHoc() {
           const arrSchedulesOk = arrSchedules.map((item: any) => {
             return {
               classId: item.classId,
-              teacherId: item.teacherId,
+              teacherId: classList.find((c) => c.id === item.classId)
+                ?.teacherId,
               timeStart: dayjs(dateSelect)
                 .set("hour", item.timeStart.get("hour"))
                 .set("minute", item.timeStart.get("minute")),
@@ -199,9 +186,7 @@ export default function LichHoc() {
 
   const fetchData = async () => {
     const res = await getSchedules(month, year);
-    const resTeachers = await getListTeacher();
     const resClass = await getListClass();
-    setTeacherList(resTeachers.data);
     setDataSchedules(res.data);
     setClassList(resClass.data);
   };
