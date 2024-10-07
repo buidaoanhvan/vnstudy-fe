@@ -1,18 +1,21 @@
 "use client";
 
 import { Button, Space, Table, Typography, App, Row, Col, Input } from "antd";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { createAttendance, getScheduleDetail } from "@/utils";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
 import dayjs from "dayjs";
+import { useWindowSize } from "react-use";
 
 export default function Page() {
   const { id } = useParams();
   const { message } = App.useApp();
   const [studentClass, setStudentClass] = useState<any>();
   const [scheduleDetail, setScheduleDetail] = useState<any>();
+  const [filterStudent, setFilterStudent] = useState<any>();
+  const { height } = useWindowSize();
 
   const columnsListStudent = [
     {
@@ -82,6 +85,13 @@ export default function Page() {
     }
   };
 
+  const handleSearch = (value: string) => {
+    const filterStudent = studentClass.filter((student: any) =>
+      student.student.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilterStudent(filterStudent);
+  };
+
   const fetchData = async () => {
     const res = await getScheduleDetail(Number(id));
     setStudentClass(res.data.class.StudentClass);
@@ -93,38 +103,41 @@ export default function Page() {
   }, [id]);
 
   return (
-    <Space direction="vertical" size={20} style={{ width: "100%" }}>
+    <Space direction="vertical" size={16} style={{ width: "100%" }}>
       <Typography.Title level={4} style={{ margin: 0 }}>
         Điểm danh [ {scheduleDetail?.class?.name} ]
       </Typography.Title>
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <Typography.Text>
-            Thời gian: {dayjs(scheduleDetail?.timeStart).format("HH:mm")} -{" "}
+            TG: {dayjs(scheduleDetail?.timeStart).format("HH:mm")} -{" "}
             {dayjs(scheduleDetail?.timeEnd).format("HH:mm")}
           </Typography.Text>
         </Col>
         <Col span={12}>
           <Typography.Text>
-            Môn học: {scheduleDetail?.class?.subject?.name}
+            Môn: {scheduleDetail?.class?.subject?.name}
           </Typography.Text>
         </Col>
-        <Col span={12}>
+        <Col span={24}>
           <Typography.Text>
             Giáo viên: {scheduleDetail?.teacher?.name}
           </Typography.Text>
+          <Button type="dashed" size="small" style={{ marginLeft: 16 }}>
+            <EditOutlined />
+          </Button>
         </Col>
       </Row>
-
-      <Typography.Title level={4} style={{ margin: 0 }}>
-        Danh sách học sinh
-      </Typography.Title>
-      <Input.Search placeholder="Tìm theo tên học sinh"/>
+      <Input.Search
+        placeholder="Tìm theo tên học sinh"
+        onChange={(e) => handleSearch(e.target.value)}
+      />
       <Table
-        dataSource={studentClass}
+        dataSource={filterStudent || studentClass}
         columns={columnsListStudent as any}
         rowKey={(row: any) => row.studentId}
         pagination={false}
+        scroll={{ y: height - 345 }}
       />
     </Space>
   );
