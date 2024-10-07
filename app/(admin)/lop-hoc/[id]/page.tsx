@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getClassDetail } from "@/utils";
 import { App, Col, Row, Space, Table, Typography } from "antd";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 export default function classDetailPage() {
   const { message } = App.useApp();
@@ -53,6 +54,14 @@ export default function classDetailPage() {
       title: "Giáo viên",
       dataIndex: ["teacher", "name"],
       key: "name",
+    },
+    {
+      title: "Điểm danh",
+      dataIndex: "action",
+      key: "action",
+      render: (_: any, record: any) => (
+        <Link href={`/diem-danh/${record.id}`}>Xem</Link>
+      ),
     },
   ];
 

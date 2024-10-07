@@ -13,6 +13,7 @@ import {
   Select,
   App,
   Form,
+  Tag,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from "next/navigation";
@@ -26,6 +27,7 @@ export default function HocSinhPage() {
   const [formRegisterClass] = Form.useForm();
   const [student, setStudent] = useState<any>(null);
   const [classes, setClasses] = useState<any>(null);
+  const [attendances, setAttendances] = useState<any>(null);
   const columnsClass = [
     {
       title: "Lớp học",
@@ -42,6 +44,40 @@ export default function HocSinhPage() {
       dataIndex: "createdAt",
       render: (text: any) => (
         <Typography.Text>{dayjs(text).format("DD/MM/YYYY")}</Typography.Text>
+      ),
+    },
+  ];
+  const columnsAttendance = [
+    {
+      title: "Điểm danh",
+      dataIndex: "status",
+      render: (text: any) => {
+        if (text == "ABSENT") {
+          return <Tag color="red">Vắng</Tag>;
+        } else if (text == "PRESENT") {
+          return <Tag color="green">Có mặt</Tag>;
+        } else {
+          return <Tag color="default">...</Tag>;
+        }
+      },
+    },
+    {
+      title: "Lớp",
+      dataIndex: ["classSchedule", "class", "name"],
+      key: "name",
+    },
+    {
+      title: "Giáo viên",
+      dataIndex: ["classSchedule", "teacher", "name"],
+      key: "teacher",
+    },
+    {
+      title: "Thời gian",
+      dataIndex: ["classSchedule", "timeStart"],
+      render: (text: any) => (
+        <Typography.Text>
+          {dayjs(text).format("DD/MM/YYYY HH:mm")}
+        </Typography.Text>
       ),
     },
   ];
@@ -94,6 +130,7 @@ export default function HocSinhPage() {
   const fetchDataStudent = async (id: number) => {
     const student = await getStudentDetail(Number(id));
     setStudent(student.data);
+    setAttendances(student.data.Attendance);
   };
 
   useEffect(() => {
@@ -103,7 +140,7 @@ export default function HocSinhPage() {
   return (
     <section>
       {student ? (
-        <Space direction="vertical" size={10} className="w-full">
+        <Space direction="vertical" size={16} className="w-full">
           <Typography.Title level={4}>Chi tiết học sinh</Typography.Title>
           <Row gutter={[5, 5]}>
             <Col xs={24} md={12} lg={8}>
@@ -157,7 +194,15 @@ export default function HocSinhPage() {
             dataSource={student?.StudentClass}
             rowKey={(row: any) => row.classId}
             pagination={false}
-            scroll={{ x: 300 }}
+            scroll={{ x: 480 }}
+          />
+          <Typography.Title level={4}>Điểm danh</Typography.Title>
+          <Table
+            columns={columnsAttendance}
+            dataSource={attendances}
+            rowKey={(row: any) => row.id}
+            pagination={false}
+            scroll={{ x: 480 }}
           />
         </Space>
       ) : (

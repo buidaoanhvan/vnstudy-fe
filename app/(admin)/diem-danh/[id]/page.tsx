@@ -78,7 +78,7 @@ export default function Page() {
       message.success("Điểm danh thành công");
       fetchData();
     } else {
-      message.error("Điểm danh thất bại");
+      message.error(res.message);
     }
   };
 
