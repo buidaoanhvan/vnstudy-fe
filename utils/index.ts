@@ -16,6 +16,8 @@ import {
   getTodaySchedules,
   getScheduleDetail,
   createAttendance,
+  createBillingCycle,
+  getBillingCycles
 } from "./api";
 import { checkAuth, logout } from "./auth";
 
@@ -38,4 +40,6 @@ export {
   getTodaySchedules,
   getScheduleDetail,
   createAttendance,
+  createBillingCycle,
+  getBillingCycles
 };

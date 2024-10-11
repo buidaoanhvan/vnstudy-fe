@@ -4,6 +4,7 @@ import {
   HomeOutlined,
   TeamOutlined,
   IdcardOutlined,
+  AuditOutlined
 } from "@ant-design/icons";
 import { Layout, Menu, Image, Flex } from "antd";
 import { useRouter } from "next/navigation";
@@ -77,6 +78,27 @@ export default function MenuBar({ collapsed, setCollapsed }: any) {
           },
         },
       ],
+    },
+    {
+      key: "ky-thu",
+      icon: <AuditOutlined />,
+      label: "Kỳ thu",
+      children: [
+        {
+          key: "danh-sach-ky-thu",
+          label: "Danh sách Kỳ Thu",
+          onClick: () => {
+            navHandler("/ky-thu");
+          },
+        },
+        {
+          key: "tao-ky-thu",
+          label: "Tạo Kỳ Thu",
+          onClick: () => {
+            navHandler("/ky-thu/tao-ky-thu");
+          },
+        }
+      ]
     },
   ];
 

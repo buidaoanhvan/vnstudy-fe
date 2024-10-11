@@ -1,6 +1,6 @@
 import { logout } from "./auth";
 
-const API_URL = "http://192.168.10.96:3333";
+const API_URL = "http://localhost:3333";
 
 async function fetchAuth(url: string, options: any) {
   const res = await fetch(url, options);
@@ -8,6 +8,26 @@ async function fetchAuth(url: string, options: any) {
     logout();
   }
   return res.json();
+}
+
+//danh sách kì thu
+export async function getBillingCycles() {
+  return fetchAuth(`${API_URL}/billing-cycle/list`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+//tạo kỳ thu mới
+export async function createBillingCycle(values: any) {
+  return fetchAuth(`${API_URL}/billing-cycle/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+    credentials: "include",
+  });
 }
 
 //điểm danh
